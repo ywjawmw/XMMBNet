@@ -1,0 +1,543 @@
+D:\Users\11972\miniconda3\envs\local_test\python.exe D:\project\XMMBNet\explain\get_LLM_response.py
+explain_DDA
+sys_prompt:
+你是一名药物重定位与生物网络分析专家，任务是基于给定的多视角生物网络证据，解释某个药物为什么可能被重定位用于某种疾病。
+
+请严格遵守以下原则：
+1. 只能使用用户提供的网络信息进行解释，不得引入未给出的蛋白、通路、疾病、药物、临床结论或外部知识。
+2. 输出应被表述为“网络模型支持的机制假说”，不得表述为已经证实的临床疗效。
+3. 需要同时分析药物侧证据、疾病侧证据，以及二者之间的桥接证据；不能只根据药物侧邻居得出重定位解释。
+4. 若 drug-protein 网络与 disease-protein 网络没有共同蛋白，但存在PPI可达路径，应明确说明这是“间接蛋白互作连接”，不得写成直接靶点重合。
+5. 解释各网络视角的相对贡献权重，并根据权重判断主要证据来源。
+6. 对“直接治疗关联网络”、“相似性网络”和“蛋白关联网络”要区分解释：
+   - 直接治疗关联网络用于说明已知或推断的疾病/药物邻域背景；
+   - 相似性网络用于说明相似药物或相似疾病带来的辅助证据；
+   - 蛋白关联网络和 PPI 路径用于说明潜在分子作用机制。
+7. 如果某类网络说明“未找到相关邻居节点”，必须如实报告不确定性，不得补全。
+8. 不要机械堆砌节点名称。正文中优先解释关键证据和关键路径；完整节点可在“证据节点列表”中简要列出。
+9. 输出应客观、简洁、学术化，避免夸大因果关系。
+
+输出格式如下：
+
+【总体判断】
+用2-4句话概括该药物被预测为治疗该疾病的主要网络依据。
+
+【主要证据来源】
+分别说明：
+1. 药物侧证据；
+2. 疾病侧证据；
+3. 药物-疾病桥接证据；
+并标明各视角权重。
+
+【最佳作用路径排序】
+按证据强度排序列出若干条路径。每条路径需包括：
+- 头实体要为疾病，尾实体要为药物
+- 路径类型；
+- 具体节点；
+- 涉及的网络视角和权重；
+- 为什么该路径排在该位置。
+
+【机制性解释】
+整合上述证据，形成一段连贯的机制假说。
+
+User Prompt:
+
+请输出一段不超过800字的中文学术性解释，包括：
+
+1. 总体判断：说明该预测主要由哪些网络视角支持；
+2. 主要证据来源：分别概括药物侧、疾病侧和桥接证据；
+3. 最佳作用路径排序：按网络权重和连接强度排序，优先解释 protein-PPI 路径；
+4. 机制假说：说明药物 <drug_name> 可能通过其相关蛋白扰动，与疾病 <disease_name> 相关蛋白模块产生间接影响；
+
+注意：
+- 不得引入未给出的蛋白、通路或外部机制；
+- 不得声称该药已经被证实可治疗该疾病；
+- 不要简单罗列所有节点，应围绕权重最高、连接最清晰的证据展开。
+
+以下是药物 <drug_name> 和 疾病 <disease_name> 的网络证据：
+
+ 药物Everolimus的表示来源自两个网络视角：
+其中，37.0%来自于视角1，即药物-疾病治疗直接关联网络；有63.0%来自于视角2，即蛋白扰动间接关联网络，由靶标蛋白-药物网络和药物相似性网络组成。
+具体网络信息如下：
+ -网络类型：药物-疾病治疗直接关联网络
+-目标节点：Everolimus
+-关联节点：共15个相关节点：AMYOTROPHIC LATERAL SCLEROSIS-PARKINSONISM/DEMENTIA COMPLEX, BREAST CANCER, RENAL CELL CARCINOMA, KILLER CELL LECTIN-LIKE RECEPTOR, PAPILLARY RENAL CELL CARCINOMA TRANSLOCATION-ASSOCIATED GENE, ADVANCED GLYCOSYLATION END PRODUCT-SPECIFIC RECEPTOR, FREQUENTLY REARRANGED IN ADVANCED T-CELL LYMPHOMAS, GOLGI SNAP RECEPTOR COMPLEX MEMBER, KILLER CELL IMMUNOGLOBULIN-LIKE RECEPTOR, SQUAMOUS CELL CARCINOMA ANTIGEN RECOGNIZED BY T CELLS, PANCREATIC CANCER, PALMOPLANTAR HYPERKERATOSIS WITH SQUAMOUS CELL CARCINOMA OF SKIN AND, PEROXISOMAL PROLIFERATOR-ACTIVATED RECEPTOR ALPHA-INTERACTING COFACTOR COMPLEX, PC3 PROSTATE CANCER CELL-SECRETED MICROPROTEIN, TUBEROUS SCLEROSIS
+-网络关系描述：已知或推断的治疗关联关系
+-在Everolimus embedding 中的权重：37.0%
+
+ -网络类型：靶标蛋白-药物网络
+-目标节点：Everolimus
+-关联节点：共6个相关节点：CYP3A4, CYP2D6, MTOR, SLCO1A2, SLCO1B3, SLCO1B1
+-网络关系描述：与靶标蛋白之间的关联关系
+-在Everolimus embedding 中的权重：47.0%
+
+ -网络类型：药物相似性网络
+-目标节点：Everolimus
+-关联节点：共20个相关节点：Temsirolimus, Pimecrolimus, Sulfasalazine, Trametinib, Cholecystokinin, Vinorelbine, Paclitaxel, Docetaxel, Vinblastine, Idelalisib, Turpentine, Rifabutin, Venetoclax, Isoprenaline, Upadacitinib, Baricitinib, Testosterone enanthate, Duvelisib, Vincristine, Cobimetinib
+-网络关系描述：根据化学结构式、蛋白序列、蛋白通路、GO 生物过程、GO 分子功能、GO 细胞组分计算的相似性关联药物
+-在Everolimus embedding 中的权重：16.0%
+
+ 疾病LUNG CANCER的表示来源自两个网络视角：
+其中，36.0%来自于视角1，即药物-疾病治疗直接关联网络；有64.0%来自于视角2，即蛋白扰动间接关联网络，由靶标蛋白-药物网络和药物相似性网络组成。
+具体网络信息如下：
+ -网络类型：药物-疾病治疗直接关联网络
+-目标节点：LUNG CANCER
+-关联节点：共23个相关节点：Gefitinib, Vinorelbine, Erlotinib, Methotrexate, Pemetrexed, Irinotecan, Etoposide, Topotecan, Ifosfamide, Paclitaxel, Docetaxel, Ixabepilone, Crizotinib, Afatinib, Ceritinib, Nintedanib, Osimertinib, Technetium Tc-99m nofetumomab merpentan, Alectinib, Dacomitinib, Entrectinib, Lorlatinib, Brigatinib
+-网络关系描述：已知或推断的治疗关联关系
+-在LUNG CANCER embedding 中的权重：36.0%
+
+ -网络类型：疾病-靶标蛋白网络
+-目标节点：LUNG CANCER
+-关联节点：共13个相关节点：PRKN, EGFR, KRAS, ERBB2, ERCC6, IRF1, CYP2A6, BRAF, PPP2R1B, MAP3K8, PIK3CA, FASLG, CASP8
+-网络关系描述：与靶标蛋白之间的关联关系
+-在LUNG CANCER embedding 中的权重：48.0%
+
+ -网络类型：疾病相似性网络
+-目标节点：LUNG CANCER
+-关联节点：共19个相关节点：HEPATOCELLULAR CARCINOMA, THROMBOCYTHEMIA, PROTEIN KINASE C, MYELOFIBROSIS, POLYCYTHEMIA VERA, PROTEUS SYNDROME, LIPODYSTROPHY, PARKINSON-DEMENTIA SYNDROME, SUPRANUCLEAR PALSY, PARKINSON DISEASE, FIBROBLAST GROWTH FACTOR RECEPTOR, MENTAL RETARDATION, EPIDERMAL GROWTH FACTOR RECEPTOR, MITOGEN-ACTIVATED PROTEIN KINASE KINASE KINASE 7-INTERACTING PROTEIN, EUKARYOTIC TRANSLATION INITIATION FACTOR 4E-BINDING PROTEIN, OVARIAN CANCER, NUCLEOTIDE-BINDING OLIGOMERIZATION DOMAIN PROTEIN, SARCOIDOSIS, GASTRIC CANCER
+-网络关系描述：根据KEGG表型注释、蛋白序列、蛋白通路、、GO 生物过程、GO 分子功能、GO 细胞组分计算的相似性关联疾病
+-在LUNG CANCER embedding 中的权重：16.0%
+ 上述疾病和药物相关的蛋白互作子网络信息如下：
+ drug-protein和protein-disease图没有重合protein，但在PPI一阶可达，路径为：
+LUNG CANCER相关蛋白为EGFR, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为ERBB2, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为CYP2A6, 通过连接蛋白CYP3A4或CYP2D6或SLCO1B3或SLCO1B1，连接药物Everolimus
+LUNG CANCER相关蛋白为PRKN, 通过连接蛋白CYP2D6或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为KRAS, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为BRAF, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为PIK3CA, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为FASLG, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为CASP8, 通过连接蛋白MTOR，连接药物Everolimus
+
+sys_prompt:
+你是一名药物重定位、生物网络分析和科学文本审校专家。你的任务是判断一段药物-疾病重定位机制解释是否充分、准确、严谨，并在必要时进行改写。
+
+请严格遵守以下规则：
+
+1. 只能基于用户提供的原始网络证据和待评价文本进行判断或改写，不得引入未出现的蛋白、药物、疾病、通路、机制或外部知识。
+2. 重点检查以下质量标准：
+   - 是否正确体现药物侧和疾病侧各网络视角的贡献权重；
+   - 是否同时分析药物侧证据、疾病侧证据和药物-疾病桥接证据；
+   - 是否正确说明 drug-protein 与 disease-protein 没有共同蛋白；
+   - 是否避免将 PPI 间接连接写成直接靶点重合；
+   - 是否避免夸大为已证实疗效；
+   - 是否存在权重排序错误、节点遗漏导致的关键证据缺失、外部机制引入或因果表述过强；
+   - 是否语言简洁、客观、学术化。
+3. 如果待评价文本满足质量标准，只输出：
+FLAG_PASS
+4. 如果待评价文本不满足质量标准，不要输出失败原因，不要输出分析过程，直接输出改进后的完整解释文本。
+5. 改进后的文本应不超过800字，和原始解释结构完全一致，结构包括：
+【总体判断】
+用2-4句话概括该药物被预测为治疗该疾病的主要网络依据。
+
+【主要证据来源】
+分别说明：
+1. 药物侧证据；
+2. 疾病侧证据；
+3. 药物-疾病桥接证据；
+并标明各视角权重。
+
+【最佳作用路径排序】
+按证据强度排序列出若干条路径。每条路径需包括：
+- 头实体要为疾病，尾实体要为药物
+- 路径类型；
+- 具体节点；
+- 涉及的网络视角和权重；
+- 为什么该路径排在该位置。
+
+【机制性解释】
+整合上述证据，形成一段连贯的机制假说。
+
+6. 改写时不得机械罗列所有节点，应围绕权重最高、连接最清晰的证据展开。
+7. 最终输出只能有两种形式：
+形式A：
+FLAG_PASS
+
+形式B：
+【总体判断】
+【主要证据来源】
+【最佳作用路径排序】
+【机制性解释】
+禁止输出“质量不过关”，“修改如下，“原因是”等任何过渡语。
+
+User Prompt
+
+请判断下面这段药物重定位解释是否过关。
+
+如果质量过关，只输出：
+FLAG_PASS
+
+如果质量不过关，请直接输出改进后的完整版本，不要输出原因、分析过程或其他多余内容。
+
+【药物名称】
+Everolimus
+
+【疾病名称】
+LUNG CANCER
+
+【原始网络证据】
+
+ 药物Everolimus的表示来源自两个网络视角：
+其中，37.0%来自于视角1，即药物-疾病治疗直接关联网络；有63.0%来自于视角2，即蛋白扰动间接关联网络，由靶标蛋白-药物网络和药物相似性网络组成。
+具体网络信息如下：
+ -网络类型：药物-疾病治疗直接关联网络
+-目标节点：Everolimus
+-关联节点：共15个相关节点：AMYOTROPHIC LATERAL SCLEROSIS-PARKINSONISM/DEMENTIA COMPLEX, BREAST CANCER, RENAL CELL CARCINOMA, KILLER CELL LECTIN-LIKE RECEPTOR, PAPILLARY RENAL CELL CARCINOMA TRANSLOCATION-ASSOCIATED GENE, ADVANCED GLYCOSYLATION END PRODUCT-SPECIFIC RECEPTOR, FREQUENTLY REARRANGED IN ADVANCED T-CELL LYMPHOMAS, GOLGI SNAP RECEPTOR COMPLEX MEMBER, KILLER CELL IMMUNOGLOBULIN-LIKE RECEPTOR, SQUAMOUS CELL CARCINOMA ANTIGEN RECOGNIZED BY T CELLS, PANCREATIC CANCER, PALMOPLANTAR HYPERKERATOSIS WITH SQUAMOUS CELL CARCINOMA OF SKIN AND, PEROXISOMAL PROLIFERATOR-ACTIVATED RECEPTOR ALPHA-INTERACTING COFACTOR COMPLEX, PC3 PROSTATE CANCER CELL-SECRETED MICROPROTEIN, TUBEROUS SCLEROSIS
+-网络关系描述：已知或推断的治疗关联关系
+-在Everolimus embedding 中的权重：37.0%
+
+ -网络类型：靶标蛋白-药物网络
+-目标节点：Everolimus
+-关联节点：共6个相关节点：CYP3A4, CYP2D6, MTOR, SLCO1A2, SLCO1B3, SLCO1B1
+-网络关系描述：与靶标蛋白之间的关联关系
+-在Everolimus embedding 中的权重：47.0%
+
+ -网络类型：药物相似性网络
+-目标节点：Everolimus
+-关联节点：共20个相关节点：Temsirolimus, Pimecrolimus, Sulfasalazine, Trametinib, Cholecystokinin, Vinorelbine, Paclitaxel, Docetaxel, Vinblastine, Idelalisib, Turpentine, Rifabutin, Venetoclax, Isoprenaline, Upadacitinib, Baricitinib, Testosterone enanthate, Duvelisib, Vincristine, Cobimetinib
+-网络关系描述：根据化学结构式、蛋白序列、蛋白通路、GO 生物过程、GO 分子功能、GO 细胞组分计算的相似性关联药物
+-在Everolimus embedding 中的权重：16.0%
+
+ 疾病LUNG CANCER的表示来源自两个网络视角：
+其中，36.0%来自于视角1，即药物-疾病治疗直接关联网络；有64.0%来自于视角2，即蛋白扰动间接关联网络，由靶标蛋白-药物网络和药物相似性网络组成。
+具体网络信息如下：
+ -网络类型：药物-疾病治疗直接关联网络
+-目标节点：LUNG CANCER
+-关联节点：共23个相关节点：Gefitinib, Vinorelbine, Erlotinib, Methotrexate, Pemetrexed, Irinotecan, Etoposide, Topotecan, Ifosfamide, Paclitaxel, Docetaxel, Ixabepilone, Crizotinib, Afatinib, Ceritinib, Nintedanib, Osimertinib, Technetium Tc-99m nofetumomab merpentan, Alectinib, Dacomitinib, Entrectinib, Lorlatinib, Brigatinib
+-网络关系描述：已知或推断的治疗关联关系
+-在LUNG CANCER embedding 中的权重：36.0%
+
+ -网络类型：疾病-靶标蛋白网络
+-目标节点：LUNG CANCER
+-关联节点：共13个相关节点：PRKN, EGFR, KRAS, ERBB2, ERCC6, IRF1, CYP2A6, BRAF, PPP2R1B, MAP3K8, PIK3CA, FASLG, CASP8
+-网络关系描述：与靶标蛋白之间的关联关系
+-在LUNG CANCER embedding 中的权重：48.0%
+
+ -网络类型：疾病相似性网络
+-目标节点：LUNG CANCER
+-关联节点：共19个相关节点：HEPATOCELLULAR CARCINOMA, THROMBOCYTHEMIA, PROTEIN KINASE C, MYELOFIBROSIS, POLYCYTHEMIA VERA, PROTEUS SYNDROME, LIPODYSTROPHY, PARKINSON-DEMENTIA SYNDROME, SUPRANUCLEAR PALSY, PARKINSON DISEASE, FIBROBLAST GROWTH FACTOR RECEPTOR, MENTAL RETARDATION, EPIDERMAL GROWTH FACTOR RECEPTOR, MITOGEN-ACTIVATED PROTEIN KINASE KINASE KINASE 7-INTERACTING PROTEIN, EUKARYOTIC TRANSLATION INITIATION FACTOR 4E-BINDING PROTEIN, OVARIAN CANCER, NUCLEOTIDE-BINDING OLIGOMERIZATION DOMAIN PROTEIN, SARCOIDOSIS, GASTRIC CANCER
+-网络关系描述：根据KEGG表型注释、蛋白序列、蛋白通路、、GO 生物过程、GO 分子功能、GO 细胞组分计算的相似性关联疾病
+-在LUNG CANCER embedding 中的权重：16.0%
+ 上述疾病和药物相关的蛋白互作子网络信息如下：
+ drug-protein和protein-disease图没有重合protein，但在PPI一阶可达，路径为：
+LUNG CANCER相关蛋白为EGFR, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为ERBB2, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为CYP2A6, 通过连接蛋白CYP3A4或CYP2D6或SLCO1B3或SLCO1B1，连接药物Everolimus
+LUNG CANCER相关蛋白为PRKN, 通过连接蛋白CYP2D6或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为KRAS, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为BRAF, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为PIK3CA, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为FASLG, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为CASP8, 通过连接蛋白MTOR，连接药物Everolimus
+
+ 【待评价解释文本】
+ 【总体判断】
+该预测主要由蛋白扰动间接关联网络支持：Everolimus药物侧蛋白相关权重为47.0%，LUNG CANCER疾病侧蛋白相关权重为48.0%。二者无共同蛋白，但存在一阶PPI可达路径，因此属于间接蛋白互作连接，而非直接靶点重合。
+
+【主要证据来源】
+1. 药物侧：Everolimus与CYP3A4、CYP2D6、MTOR、SLCO1A2、SLCO1B3、SLCO1B1相关，蛋白视角贡献最高；药物相似性网络占16.0%，提供辅助背景。
+2. 疾病侧：LUNG CANCER与EGFR、ERBB2、KRAS、BRAF、PIK3CA、FASLG、CASP8等蛋白相关，疾病蛋白网络权重为48.0%，是疾病侧核心证据。
+3. 桥接证据：直接治疗关联网络提供邻域背景，药物侧37.0%、疾病侧36.0%；相似药物Vinorelbine、Paclitaxel、Docetaxel同时出现在Everolimus相似药物与LUNG CANCER治疗邻域中，构成辅助相似性证据。
+
+【最佳作用路径排序】
+1. LUNG CANCER—PIK3CA/KRAS/BRAF/FASLG/CASP8—MTOR—Everolimus：protein-PPI路径；涉及药物蛋白47.0%与疾病蛋白48.0%，连接蛋白集中且权重最高。
+2. LUNG CANCER—EGFR/ERBB2—MTOR或CYP3A4—Everolimus：protein-PPI路径；疾病关键蛋白可通过多个连接蛋白间接到达药物。
+3. LUNG CANCER—Vinorelbine/Paclitaxel/Docetaxel—Everolimus：相似性与直接治疗邻域路径；权重较低，作为辅助支持。
+
+【机制假说】
+网络模型支持的机制假说是：Everolimus可能通过其相关蛋白，尤其是MTOR及部分代谢/转运相关蛋白，对LUNG CANCER相关蛋白模块产生间接扰动。由于drug-protein与disease-protein之间没有共同蛋白，该假说依赖一阶PPI桥接，而非直接靶点重叠；相似药物和治疗邻域仅增强背景一致性，不能单独证明疗效。
+sys_prompt:
+你是一名药物重定位、生物网络分析和科学文本审校专家。你的任务是判断一段药物-疾病重定位机制解释是否充分、准确、严谨，并在必要时进行改写。
+
+请严格遵守以下规则：
+
+1. 只能基于用户提供的原始网络证据和待评价文本进行判断或改写，不得引入未出现的蛋白、药物、疾病、通路、机制或外部知识。
+2. 重点检查以下质量标准：
+   - 是否正确体现药物侧和疾病侧各网络视角的贡献权重；
+   - 是否同时分析药物侧证据、疾病侧证据和药物-疾病桥接证据；
+   - 是否正确说明 drug-protein 与 disease-protein 没有共同蛋白；
+   - 是否避免将 PPI 间接连接写成直接靶点重合；
+   - 是否避免夸大为已证实疗效；
+   - 是否存在权重排序错误、节点遗漏导致的关键证据缺失、外部机制引入或因果表述过强；
+   - 是否语言简洁、客观、学术化。
+3. 如果待评价文本满足质量标准，只输出：
+FLAG_PASS
+4. 如果待评价文本不满足质量标准，不要输出失败原因，不要输出分析过程，直接输出改进后的完整解释文本。
+5. 改进后的文本应不超过800字，和原始解释结构完全一致，结构包括：
+【总体判断】
+用2-4句话概括该药物被预测为治疗该疾病的主要网络依据。
+
+【主要证据来源】
+分别说明：
+1. 药物侧证据；
+2. 疾病侧证据；
+3. 药物-疾病桥接证据；
+并标明各视角权重。
+
+【最佳作用路径排序】
+按证据强度排序列出若干条路径。每条路径需包括：
+- 头实体要为疾病，尾实体要为药物
+- 路径类型；
+- 具体节点；
+- 涉及的网络视角和权重；
+- 为什么该路径排在该位置。
+
+【机制性解释】
+整合上述证据，形成一段连贯的机制假说。
+
+6. 改写时不得机械罗列所有节点，应围绕权重最高、连接最清晰的证据展开。
+7. 最终输出只能有两种形式：
+形式A：
+FLAG_PASS
+
+形式B：
+【总体判断】
+【主要证据来源】
+【最佳作用路径排序】
+【机制性解释】
+禁止输出“质量不过关”，“修改如下，“原因是”等任何过渡语。
+
+LLM的Prompt是****************************************************************************************************
+
+请判断下面这段药物重定位解释是否过关。
+
+如果质量过关，只输出：
+FLAG_PASS
+
+如果质量不过关，请直接输出改进后的完整版本，不要输出原因、分析过程或其他多余内容。
+
+【药物名称】
+Everolimus
+
+【疾病名称】
+LUNG CANCER
+
+【原始网络证据】
+
+ 药物Everolimus的表示来源自两个网络视角：
+其中，37.0%来自于视角1，即药物-疾病治疗直接关联网络；有63.0%来自于视角2，即蛋白扰动间接关联网络，由靶标蛋白-药物网络和药物相似性网络组成。
+具体网络信息如下：
+ -网络类型：药物-疾病治疗直接关联网络
+-目标节点：Everolimus
+-关联节点：共15个相关节点：AMYOTROPHIC LATERAL SCLEROSIS-PARKINSONISM/DEMENTIA COMPLEX, BREAST CANCER, RENAL CELL CARCINOMA, KILLER CELL LECTIN-LIKE RECEPTOR, PAPILLARY RENAL CELL CARCINOMA TRANSLOCATION-ASSOCIATED GENE, ADVANCED GLYCOSYLATION END PRODUCT-SPECIFIC RECEPTOR, FREQUENTLY REARRANGED IN ADVANCED T-CELL LYMPHOMAS, GOLGI SNAP RECEPTOR COMPLEX MEMBER, KILLER CELL IMMUNOGLOBULIN-LIKE RECEPTOR, SQUAMOUS CELL CARCINOMA ANTIGEN RECOGNIZED BY T CELLS, PANCREATIC CANCER, PALMOPLANTAR HYPERKERATOSIS WITH SQUAMOUS CELL CARCINOMA OF SKIN AND, PEROXISOMAL PROLIFERATOR-ACTIVATED RECEPTOR ALPHA-INTERACTING COFACTOR COMPLEX, PC3 PROSTATE CANCER CELL-SECRETED MICROPROTEIN, TUBEROUS SCLEROSIS
+-网络关系描述：已知或推断的治疗关联关系
+-在Everolimus embedding 中的权重：37.0%
+
+ -网络类型：靶标蛋白-药物网络
+-目标节点：Everolimus
+-关联节点：共6个相关节点：CYP3A4, CYP2D6, MTOR, SLCO1A2, SLCO1B3, SLCO1B1
+-网络关系描述：与靶标蛋白之间的关联关系
+-在Everolimus embedding 中的权重：47.0%
+
+ -网络类型：药物相似性网络
+-目标节点：Everolimus
+-关联节点：共20个相关节点：Temsirolimus, Pimecrolimus, Sulfasalazine, Trametinib, Cholecystokinin, Vinorelbine, Paclitaxel, Docetaxel, Vinblastine, Idelalisib, Turpentine, Rifabutin, Venetoclax, Isoprenaline, Upadacitinib, Baricitinib, Testosterone enanthate, Duvelisib, Vincristine, Cobimetinib
+-网络关系描述：根据化学结构式、蛋白序列、蛋白通路、GO 生物过程、GO 分子功能、GO 细胞组分计算的相似性关联药物
+-在Everolimus embedding 中的权重：16.0%
+
+ 疾病LUNG CANCER的表示来源自两个网络视角：
+其中，36.0%来自于视角1，即药物-疾病治疗直接关联网络；有64.0%来自于视角2，即蛋白扰动间接关联网络，由靶标蛋白-药物网络和药物相似性网络组成。
+具体网络信息如下：
+ -网络类型：药物-疾病治疗直接关联网络
+-目标节点：LUNG CANCER
+-关联节点：共23个相关节点：Gefitinib, Vinorelbine, Erlotinib, Methotrexate, Pemetrexed, Irinotecan, Etoposide, Topotecan, Ifosfamide, Paclitaxel, Docetaxel, Ixabepilone, Crizotinib, Afatinib, Ceritinib, Nintedanib, Osimertinib, Technetium Tc-99m nofetumomab merpentan, Alectinib, Dacomitinib, Entrectinib, Lorlatinib, Brigatinib
+-网络关系描述：已知或推断的治疗关联关系
+-在LUNG CANCER embedding 中的权重：36.0%
+
+ -网络类型：疾病-靶标蛋白网络
+-目标节点：LUNG CANCER
+-关联节点：共13个相关节点：PRKN, EGFR, KRAS, ERBB2, ERCC6, IRF1, CYP2A6, BRAF, PPP2R1B, MAP3K8, PIK3CA, FASLG, CASP8
+-网络关系描述：与靶标蛋白之间的关联关系
+-在LUNG CANCER embedding 中的权重：48.0%
+
+ -网络类型：疾病相似性网络
+-目标节点：LUNG CANCER
+-关联节点：共19个相关节点：HEPATOCELLULAR CARCINOMA, THROMBOCYTHEMIA, PROTEIN KINASE C, MYELOFIBROSIS, POLYCYTHEMIA VERA, PROTEUS SYNDROME, LIPODYSTROPHY, PARKINSON-DEMENTIA SYNDROME, SUPRANUCLEAR PALSY, PARKINSON DISEASE, FIBROBLAST GROWTH FACTOR RECEPTOR, MENTAL RETARDATION, EPIDERMAL GROWTH FACTOR RECEPTOR, MITOGEN-ACTIVATED PROTEIN KINASE KINASE KINASE 7-INTERACTING PROTEIN, EUKARYOTIC TRANSLATION INITIATION FACTOR 4E-BINDING PROTEIN, OVARIAN CANCER, NUCLEOTIDE-BINDING OLIGOMERIZATION DOMAIN PROTEIN, SARCOIDOSIS, GASTRIC CANCER
+-网络关系描述：根据KEGG表型注释、蛋白序列、蛋白通路、、GO 生物过程、GO 分子功能、GO 细胞组分计算的相似性关联疾病
+-在LUNG CANCER embedding 中的权重：16.0%
+ 上述疾病和药物相关的蛋白互作子网络信息如下：
+ drug-protein和protein-disease图没有重合protein，但在PPI一阶可达，路径为：
+LUNG CANCER相关蛋白为EGFR, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为ERBB2, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为CYP2A6, 通过连接蛋白CYP3A4或CYP2D6或SLCO1B3或SLCO1B1，连接药物Everolimus
+LUNG CANCER相关蛋白为PRKN, 通过连接蛋白CYP2D6或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为KRAS, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为BRAF, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为PIK3CA, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为FASLG, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为CASP8, 通过连接蛋白MTOR，连接药物Everolimus
+
+ 【待评价解释文本】
+ 【总体判断】
+该预测主要由蛋白扰动间接关联网络支持，且药物侧蛋白网络权重47.0%、疾病侧蛋白网络权重48.0%，两侧贡献接近并共同构成核心依据。Everolimus与LUNG CANCER相关蛋白无共同节点，但可通过一阶PPI建立间接连接，因此更符合间接桥接而非直接靶点重合。
+
+【主要证据来源】
+1. 药物侧证据：Everolimus的蛋白侧节点为CYP3A4、CYP2D6、MTOR、SLCO1A2、SLCO1B3、SLCO1B1，权重47.0%，为主要药物侧依据；药物相似性网络权重16.0%，仅提供辅助一致性。
+2. 疾病侧证据：LUNG CANCER的蛋白侧节点为EGFR、ERBB2、KRAS、BRAF、PIK3CA、FASLG、CASP8、CYP2A6等，权重48.0%，为主要疾病侧依据；疾病相似性网络权重16.0%，为辅助背景。
+3. 桥接证据：drug-protein与disease-protein无共同蛋白，但存在一阶PPI可达路径；直接治疗关联网络中Everolimus（37.0%）与LUNG CANCER（36.0%）的邻域重叠仅作一致性补充，不能替代PPI桥接。
+
+【最佳作用路径排序】
+1. LUNG CANCER—KRAS/BRAF/PIK3CA/FASLG/CASP8—MTOR—Everolimus：protein-PPI路径；连接最直接，且MTOR同时位于药物侧核心蛋白中，证据最集中。
+2. LUNG CANCER—EGFR/ERBB2—MTOR或CYP3A4—Everolimus：protein-PPI路径；涉及疾病侧高权重节点，且可由多个药物侧蛋白承接。
+3. LUNG CANCER—CYP2A6—CYP3A4/CYP2D6/SLCO1B3/SLCO1B1—Everolimus：protein-PPI路径；连接链更分散，故排序靠后。
+
+【机制性解释】
+综合来看，Everolimus被预测可能通过其药物侧蛋白网络，尤其是MTOR及部分代谢/转运相关蛋白，与LUNG CANCER的疾病蛋白模块形成一阶PPI间接连接，从而获得网络层面的重定位支持。由于两侧不存在共同蛋白，该预测不应解释为直接靶点重合；药物与疾病的直接治疗邻域及相似性网络仅提供辅助一致性。
+sys_prompt:
+你是一名药物重定位、生物网络分析和科学文本审校专家。你的任务是判断一段药物-疾病重定位机制解释是否充分、准确、严谨，并在必要时进行改写。
+
+请严格遵守以下规则：
+
+1. 只能基于用户提供的原始网络证据和待评价文本进行判断或改写，不得引入未出现的蛋白、药物、疾病、通路、机制或外部知识。
+2. 重点检查以下质量标准：
+   - 是否正确体现药物侧和疾病侧各网络视角的贡献权重；
+   - 是否同时分析药物侧证据、疾病侧证据和药物-疾病桥接证据；
+   - 是否正确说明 drug-protein 与 disease-protein 没有共同蛋白；
+   - 是否避免将 PPI 间接连接写成直接靶点重合；
+   - 是否避免夸大为已证实疗效；
+   - 是否存在权重排序错误、节点遗漏导致的关键证据缺失、外部机制引入或因果表述过强；
+   - 是否语言简洁、客观、学术化。
+3. 如果待评价文本满足质量标准，只输出：
+FLAG_PASS
+4. 如果待评价文本不满足质量标准，不要输出失败原因，不要输出分析过程，直接输出改进后的完整解释文本。
+5. 改进后的文本应不超过800字，和原始解释结构完全一致，结构包括：
+【总体判断】
+用2-4句话概括该药物被预测为治疗该疾病的主要网络依据。
+
+【主要证据来源】
+分别说明：
+1. 药物侧证据；
+2. 疾病侧证据；
+3. 药物-疾病桥接证据；
+并标明各视角权重。
+
+【最佳作用路径排序】
+按证据强度排序列出若干条路径。每条路径需包括：
+- 头实体要为疾病，尾实体要为药物
+- 路径类型；
+- 具体节点；
+- 涉及的网络视角和权重；
+- 为什么该路径排在该位置。
+
+【机制性解释】
+整合上述证据，形成一段连贯的机制假说。
+
+6. 改写时不得机械罗列所有节点，应围绕权重最高、连接最清晰的证据展开。
+7. 最终输出只能有两种形式：
+形式A：
+FLAG_PASS
+
+形式B：
+【总体判断】
+【主要证据来源】
+【最佳作用路径排序】
+【机制性解释】
+禁止输出“质量不过关”，“修改如下，“原因是”等任何过渡语。
+
+LLM的Prompt是****************************************************************************************************
+
+请判断下面这段药物重定位解释是否过关。
+
+如果质量过关，只输出：
+FLAG_PASS
+
+如果质量不过关，请直接输出改进后的完整版本，不要输出原因、分析过程或其他多余内容。
+
+【药物名称】
+Everolimus
+
+【疾病名称】
+LUNG CANCER
+
+【原始网络证据】
+
+ 药物Everolimus的表示来源自两个网络视角：
+其中，37.0%来自于视角1，即药物-疾病治疗直接关联网络；有63.0%来自于视角2，即蛋白扰动间接关联网络，由靶标蛋白-药物网络和药物相似性网络组成。
+具体网络信息如下：
+ -网络类型：药物-疾病治疗直接关联网络
+-目标节点：Everolimus
+-关联节点：共15个相关节点：AMYOTROPHIC LATERAL SCLEROSIS-PARKINSONISM/DEMENTIA COMPLEX, BREAST CANCER, RENAL CELL CARCINOMA, KILLER CELL LECTIN-LIKE RECEPTOR, PAPILLARY RENAL CELL CARCINOMA TRANSLOCATION-ASSOCIATED GENE, ADVANCED GLYCOSYLATION END PRODUCT-SPECIFIC RECEPTOR, FREQUENTLY REARRANGED IN ADVANCED T-CELL LYMPHOMAS, GOLGI SNAP RECEPTOR COMPLEX MEMBER, KILLER CELL IMMUNOGLOBULIN-LIKE RECEPTOR, SQUAMOUS CELL CARCINOMA ANTIGEN RECOGNIZED BY T CELLS, PANCREATIC CANCER, PALMOPLANTAR HYPERKERATOSIS WITH SQUAMOUS CELL CARCINOMA OF SKIN AND, PEROXISOMAL PROLIFERATOR-ACTIVATED RECEPTOR ALPHA-INTERACTING COFACTOR COMPLEX, PC3 PROSTATE CANCER CELL-SECRETED MICROPROTEIN, TUBEROUS SCLEROSIS
+-网络关系描述：已知或推断的治疗关联关系
+-在Everolimus embedding 中的权重：37.0%
+
+ -网络类型：靶标蛋白-药物网络
+-目标节点：Everolimus
+-关联节点：共6个相关节点：CYP3A4, CYP2D6, MTOR, SLCO1A2, SLCO1B3, SLCO1B1
+-网络关系描述：与靶标蛋白之间的关联关系
+-在Everolimus embedding 中的权重：47.0%
+
+ -网络类型：药物相似性网络
+-目标节点：Everolimus
+-关联节点：共20个相关节点：Temsirolimus, Pimecrolimus, Sulfasalazine, Trametinib, Cholecystokinin, Vinorelbine, Paclitaxel, Docetaxel, Vinblastine, Idelalisib, Turpentine, Rifabutin, Venetoclax, Isoprenaline, Upadacitinib, Baricitinib, Testosterone enanthate, Duvelisib, Vincristine, Cobimetinib
+-网络关系描述：根据化学结构式、蛋白序列、蛋白通路、GO 生物过程、GO 分子功能、GO 细胞组分计算的相似性关联药物
+-在Everolimus embedding 中的权重：16.0%
+
+ 疾病LUNG CANCER的表示来源自两个网络视角：
+其中，36.0%来自于视角1，即药物-疾病治疗直接关联网络；有64.0%来自于视角2，即蛋白扰动间接关联网络，由靶标蛋白-药物网络和药物相似性网络组成。
+具体网络信息如下：
+ -网络类型：药物-疾病治疗直接关联网络
+-目标节点：LUNG CANCER
+-关联节点：共23个相关节点：Gefitinib, Vinorelbine, Erlotinib, Methotrexate, Pemetrexed, Irinotecan, Etoposide, Topotecan, Ifosfamide, Paclitaxel, Docetaxel, Ixabepilone, Crizotinib, Afatinib, Ceritinib, Nintedanib, Osimertinib, Technetium Tc-99m nofetumomab merpentan, Alectinib, Dacomitinib, Entrectinib, Lorlatinib, Brigatinib
+-网络关系描述：已知或推断的治疗关联关系
+-在LUNG CANCER embedding 中的权重：36.0%
+
+ -网络类型：疾病-靶标蛋白网络
+-目标节点：LUNG CANCER
+-关联节点：共13个相关节点：PRKN, EGFR, KRAS, ERBB2, ERCC6, IRF1, CYP2A6, BRAF, PPP2R1B, MAP3K8, PIK3CA, FASLG, CASP8
+-网络关系描述：与靶标蛋白之间的关联关系
+-在LUNG CANCER embedding 中的权重：48.0%
+
+ -网络类型：疾病相似性网络
+-目标节点：LUNG CANCER
+-关联节点：共19个相关节点：HEPATOCELLULAR CARCINOMA, THROMBOCYTHEMIA, PROTEIN KINASE C, MYELOFIBROSIS, POLYCYTHEMIA VERA, PROTEUS SYNDROME, LIPODYSTROPHY, PARKINSON-DEMENTIA SYNDROME, SUPRANUCLEAR PALSY, PARKINSON DISEASE, FIBROBLAST GROWTH FACTOR RECEPTOR, MENTAL RETARDATION, EPIDERMAL GROWTH FACTOR RECEPTOR, MITOGEN-ACTIVATED PROTEIN KINASE KINASE KINASE 7-INTERACTING PROTEIN, EUKARYOTIC TRANSLATION INITIATION FACTOR 4E-BINDING PROTEIN, OVARIAN CANCER, NUCLEOTIDE-BINDING OLIGOMERIZATION DOMAIN PROTEIN, SARCOIDOSIS, GASTRIC CANCER
+-网络关系描述：根据KEGG表型注释、蛋白序列、蛋白通路、、GO 生物过程、GO 分子功能、GO 细胞组分计算的相似性关联疾病
+-在LUNG CANCER embedding 中的权重：16.0%
+ 上述疾病和药物相关的蛋白互作子网络信息如下：
+ drug-protein和protein-disease图没有重合protein，但在PPI一阶可达，路径为：
+LUNG CANCER相关蛋白为EGFR, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为ERBB2, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为CYP2A6, 通过连接蛋白CYP3A4或CYP2D6或SLCO1B3或SLCO1B1，连接药物Everolimus
+LUNG CANCER相关蛋白为PRKN, 通过连接蛋白CYP2D6或MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为KRAS, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为BRAF, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为PIK3CA, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为FASLG, 通过连接蛋白MTOR，连接药物Everolimus
+LUNG CANCER相关蛋白为CASP8, 通过连接蛋白MTOR，连接药物Everolimus
+
+ 【待评价解释文本】
+ 【总体判断】
+Everolimus用于LUNG CANCER的重定位预测主要由蛋白扰动间接关联网络支持：药物侧靶标蛋白-药物网络权重47.0%，疾病侧疾病-靶标蛋白网络权重48.0%，是两侧最主要证据。drug-protein与disease-protein之间没有共同蛋白，因此该预测不应解释为直接靶点重合，而是依赖一阶PPI形成的间接桥接。直接治疗关联网络在药物侧和疾病侧分别占37.0%和36.0%，提供背景支持但不是核心桥接证据。
+
+【主要证据来源】
+1. 药物侧证据：Everolimus的主要证据来自靶标蛋白-药物网络，权重47.0%，相关蛋白包括MTOR、CYP3A4、CYP2D6、SLCO1B3、SLCO1B1等；药物相似性网络权重16.0%，仅作为辅助信息。
+2. 疾病侧证据：LUNG CANCER的主要证据来自疾病-靶标蛋白网络，权重48.0%，相关蛋白包括EGFR、ERBB2、KRAS、BRAF、PIK3CA、FASLG、CASP8、CYP2A6等；疾病相似性网络权重16.0%，提供辅助背景。
+3. 药物-疾病桥接证据：两侧蛋白无重合，但多条疾病蛋白可经一阶PPI连接至Everolimus相关蛋白，形成间接桥接；药物-疾病治疗直接关联网络权重为Everolimus 37.0%、LUNG CANCER 36.0%，支持总体相关性但不能替代蛋白桥接证据。
+
+【最佳作用路径排序】
+1. LUNG CANCER—KRAS/BRAF/PIK3CA/FASLG/CASP8—MTOR—Everolimus：protein-PPI间接路径；涉及疾病侧蛋白网络48.0%和药物侧蛋白网络47.0%，多个疾病蛋白均连接至MTOR，且MTOR为Everolimus药物侧节点，证据最集中。
+2. LUNG CANCER—EGFR/ERBB2—MTOR或CYP3A4—Everolimus：protein-PPI间接路径；同样连接疾病侧48.0%与药物侧47.0%，但桥接蛋白分布较前一路径更分散，故排第二。
+3. LUNG CANCER—CYP2A6—CYP3A4/CYP2D6/SLCO1B3/SLCO1B1—Everolimus：protein-PPI间接路径；涉及疾病侧48.0%和药物侧47.0%，可达连接较多，但主要由单个疾病蛋白CYP2A6发出，证据集中度较低。
+
+【机制性解释】
+综合网络证据，Everolimus与LUNG CANCER之间的预测关联主要来自两侧高权重蛋白网络之间的一阶PPI桥接，而非共同靶点。疾病侧KRAS、BRAF、PIK3CA、FASLG、CASP8等蛋白可通过MTOR连接至Everolimus，EGFR、ERBB2及CYP2A6也可通过MTOR、CYP3A4、CYP2D6或SLCO转运相关节点形成间接连接。这些路径提示Everolimus可能与LUNG CANCER相关蛋白模块存在网络邻近性；直接治疗关联网络和相似性网络仅提供辅助一致性，不能据此推断已证实疗效。
+2
+FLAG_PASS
+drug_name : Everolimus
+disease_name : LUNG CANCER
+explain_graph : 【总体判断】
+Everolimus用于LUNG CANCER的重定位预测主要由蛋白扰动间接关联网络支持：药物侧靶标蛋白-药物网络权重47.0%，疾病侧疾病-靶标蛋白网络权重48.0%，是两侧最主要证据。drug-protein与disease-protein之间没有共同蛋白，因此该预测不应解释为直接靶点重合，而是依赖一阶PPI形成的间接桥接。直接治疗关联网络在药物侧和疾病侧分别占37.0%和36.0%，提供背景支持但不是核心桥接证据。
+
+【主要证据来源】
+1. 药物侧证据：Everolimus的主要证据来自靶标蛋白-药物网络，权重47.0%，相关蛋白包括MTOR、CYP3A4、CYP2D6、SLCO1B3、SLCO1B1等；药物相似性网络权重16.0%，仅作为辅助信息。
+2. 疾病侧证据：LUNG CANCER的主要证据来自疾病-靶标蛋白网络，权重48.0%，相关蛋白包括EGFR、ERBB2、KRAS、BRAF、PIK3CA、FASLG、CASP8、CYP2A6等；疾病相似性网络权重16.0%，提供辅助背景。
+3. 药物-疾病桥接证据：两侧蛋白无重合，但多条疾病蛋白可经一阶PPI连接至Everolimus相关蛋白，形成间接桥接；药物-疾病治疗直接关联网络权重为Everolimus 37.0%、LUNG CANCER 36.0%，支持总体相关性但不能替代蛋白桥接证据。
+
+【最佳作用路径排序】
+1. LUNG CANCER—KRAS/BRAF/PIK3CA/FASLG/CASP8—MTOR—Everolimus：protein-PPI间接路径；涉及疾病侧蛋白网络48.0%和药物侧蛋白网络47.0%，多个疾病蛋白均连接至MTOR，且MTOR为Everolimus药物侧节点，证据最集中。
+2. LUNG CANCER—EGFR/ERBB2—MTOR或CYP3A4—Everolimus：protein-PPI间接路径；同样连接疾病侧48.0%与药物侧47.0%，但桥接蛋白分布较前一路径更分散，故排第二。
+3. LUNG CANCER—CYP2A6—CYP3A4/CYP2D6/SLCO1B3/SLCO1B1—Everolimus：protein-PPI间接路径；涉及疾病侧48.0%和药物侧47.0%，可达连接较多，但主要由单个疾病蛋白CYP2A6发出，证据集中度较低。
+
+【机制性解释】
+综合网络证据，Everolimus与LUNG CANCER之间的预测关联主要来自两侧高权重蛋白网络之间的一阶PPI桥接，而非共同靶点。疾病侧KRAS、BRAF、PIK3CA、FASLG、CASP8等蛋白可通过MTOR连接至Everolimus，EGFR、ERBB2及CYP2A6也可通过MTOR、CYP3A4、CYP2D6或SLCO转运相关节点形成间接连接。这些路径提示Everolimus可能与LUNG CANCER相关蛋白模块存在网络邻近性；直接治疗关联网络和相似性网络仅提供辅助一致性，不能据此推断已证实疗效。
+
+进程已结束，退出代码为 0

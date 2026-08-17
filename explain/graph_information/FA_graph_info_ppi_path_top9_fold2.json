@@ -1,0 +1,200 @@
+{
+  "keyword": "graph_info",
+  "example": [
+    {
+      "drug_name": "Everolimus",
+      "disease_name": "LUNG CANCER",
+      "graph_info_summary": {
+        "dir_score": {
+          "score_value": 0.3698371052742004,
+          "neighbor_count": 15,
+          "neighbors": [
+            "AMYOTROPHIC LATERAL SCLEROSIS-PARKINSONISM/DEMENTIA COMPLEX",
+            "BREAST CANCER",
+            "RENAL CELL CARCINOMA",
+            "KILLER CELL LECTIN-LIKE RECEPTOR",
+            "PAPILLARY RENAL CELL CARCINOMA TRANSLOCATION-ASSOCIATED GENE",
+            "ADVANCED GLYCOSYLATION END PRODUCT-SPECIFIC RECEPTOR",
+            "FREQUENTLY REARRANGED IN ADVANCED T-CELL LYMPHOMAS",
+            "GOLGI SNAP RECEPTOR COMPLEX MEMBER",
+            "KILLER CELL IMMUNOGLOBULIN-LIKE RECEPTOR",
+            "SQUAMOUS CELL CARCINOMA ANTIGEN RECOGNIZED BY T CELLS",
+            "PANCREATIC CANCER",
+            "PALMOPLANTAR HYPERKERATOSIS WITH SQUAMOUS CELL CARCINOMA OF SKIN AND",
+            "PEROXISOMAL PROLIFERATOR-ACTIVATED RECEPTOR ALPHA-INTERACTING COFACTOR COMPLEX",
+            "PC3 PROSTATE CANCER CELL-SECRETED MICROPROTEIN",
+            "TUBEROUS SCLEROSIS"
+          ]
+        },
+        "evi_score": {
+          "score_value": 0.630162924528122,
+          "neighbor_count": 0,
+          "neighbors": []
+        },
+        "pro_score": {
+          "score_value": 0.75,
+          "neighbor_count": 6,
+          "neighbors": [
+            "CYP3A4",
+            "CYP2D6",
+            "MTOR",
+            "SLCO1A2",
+            "SLCO1B3",
+            "SLCO1B1"
+          ]
+        },
+        "sim_score": {
+          "score_value": 0.2500000000598915,
+          "neighbor_count": 20,
+          "neighbors": [
+            "Temsirolimus",
+            "Pimecrolimus",
+            "Sulfasalazine",
+            "Trametinib",
+            "Cholecystokinin",
+            "Vinorelbine",
+            "Paclitaxel",
+            "Docetaxel",
+            "Vinblastine",
+            "Idelalisib",
+            "Turpentine",
+            "Rifabutin",
+            "Venetoclax",
+            "Isoprenaline",
+            "Upadacitinib",
+            "Baricitinib",
+            "Testosterone enanthate",
+            "Duvelisib",
+            "Vincristine",
+            "Cobimetinib"
+          ]
+        }
+      },
+      "disease_graph_summary": {
+        "disease_id": 439,
+        "disease_name": "LUNG CANCER",
+        "scores": {
+          "dir_score": {
+            "score_value": 0.3623331114649773,
+            "neighbor_count": 23,
+            "neighbors": [
+              "Gefitinib",
+              "Vinorelbine",
+              "Erlotinib",
+              "Methotrexate",
+              "Pemetrexed",
+              "Irinotecan",
+              "Etoposide",
+              "Topotecan",
+              "Ifosfamide",
+              "Paclitaxel",
+              "Docetaxel",
+              "Ixabepilone",
+              "Crizotinib",
+              "Afatinib",
+              "Ceritinib",
+              "Nintedanib",
+              "Osimertinib",
+              "Technetium Tc-99m nofetumomab merpentan",
+              "Alectinib",
+              "Dacomitinib",
+              "Entrectinib",
+              "Lorlatinib",
+              "Brigatinib"
+            ]
+          },
+          "evi_score": {
+            "score_value": 0.6376669108867645,
+            "neighbor_count": 0,
+            "neighbors": []
+          },
+          "pro_score": {
+            "score_value": 0.7499998807907104,
+            "neighbor_count": 13,
+            "neighbors": [
+              "PRKN",
+              "EGFR",
+              "KRAS",
+              "ERBB2",
+              "ERCC6",
+              "IRF1",
+              "CYP2A6",
+              "BRAF",
+              "PPP2R1B",
+              "MAP3K8",
+              "PIK3CA",
+              "FASLG",
+              "CASP8"
+            ]
+          },
+          "sim_score": {
+            "score_value": 0.2500000979833317,
+            "neighbor_count": 19,
+            "neighbors": [
+              "HEPATOCELLULAR CARCINOMA",
+              "THROMBOCYTHEMIA",
+              "PROTEIN KINASE C",
+              "MYELOFIBROSIS",
+              "POLYCYTHEMIA VERA",
+              "PROTEUS SYNDROME",
+              "LIPODYSTROPHY",
+              "PARKINSON-DEMENTIA SYNDROME",
+              "SUPRANUCLEAR PALSY",
+              "PARKINSON DISEASE",
+              "FIBROBLAST GROWTH FACTOR RECEPTOR",
+              "MENTAL RETARDATION",
+              "EPIDERMAL GROWTH FACTOR RECEPTOR",
+              "MITOGEN-ACTIVATED PROTEIN KINASE KINASE KINASE 7-INTERACTING PROTEIN",
+              "EUKARYOTIC TRANSLATION INITIATION FACTOR 4E-BINDING PROTEIN",
+              "OVARIAN CANCER",
+              "NUCLEOTIDE-BINDING OLIGOMERIZATION DOMAIN PROTEIN",
+              "SARCOIDOSIS",
+              "GASTRIC CANCER"
+            ]
+          }
+        }
+      },
+      "ppi_status": {
+        "overlap_protein": "drug-protein和protein-disease图没有重合protein，但在PPI三阶内可达，已输出路径。"
+      },
+      "ppi_hop1": {
+        "flag": "ppi_reachable",
+        "protein_map": {
+          "hop_1": [
+            "LUNG CANCER相关蛋白为EGFR, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为ERBB2, 通过连接蛋白CYP3A4或MTOR，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为CYP2A6, 通过连接蛋白CYP3A4或CYP2D6或SLCO1B3或SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为PRKN, 通过连接蛋白CYP2D6或MTOR，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为KRAS, 通过连接蛋白MTOR，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为BRAF, 通过连接蛋白MTOR，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为PIK3CA, 通过连接蛋白MTOR，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为FASLG, 通过连接蛋白MTOR，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为CASP8, 通过连接蛋白MTOR，连接药物Everolimus\n"
+          ],
+          "hop_2": [
+            "LUNG CANCER相关蛋白为PRKN, 通过连接蛋白PLA2G6->CYP3A4，或ALB->SLCO1A2，或ALB->SLCO1B3，或APOE->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为KRAS, 通过连接蛋白ALDH1A1->CYP3A4，或ALB->CYP2D6，或ALB->SLCO1A2，或FGB->SLCO1B3，或FGB->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为ERCC6, 通过连接蛋白TP53->CYP3A4，或CHEK1->MTOR，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为IRF1, 通过连接蛋白TNF->CYP3A4，或TLR4->MTOR，或SLC22A5->SLCO1A2，或SLC22A5->SLCO1B3，或SLC22A5->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为BRAF, 通过连接蛋白EGFR->CYP3A4，或PRKN->CYP2D6，或ALB->SLCO1A2，或FGB->SLCO1B3，或FGB->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为PPP2R1B, 通过连接蛋白EGFR->CYP3A4，或DRD2->CYP2D6，或AXIN1->MTOR，或CTNNB1->SLCO1B3，或APOB->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为MAP3K8, 通过连接蛋白EGFR->CYP3A4，或ESR1->CYP2D6，或TLR4->MTOR，或JUN->SLCO1B3，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为PIK3CA, 通过连接蛋白EGFR->CYP3A4，或PRKN->CYP2D6，或JUN->SLCO1B3，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为FASLG, 通过连接蛋白EGFR->CYP3A4，或ALB->CYP2D6，或ALB->SLCO1A2，或ALB->SLCO1B3，或ALB->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为CASP8, 通过连接蛋白EGFR->CYP3A4，或ALB->CYP2D6，或ALB->SLCO1A2，或ALB->SLCO1B3，或ALB->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为EGFR, 通过连接蛋白PRKN->CYP2D6，或ALB->SLCO1A2，或ALB->SLCO1B3，或APOE->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为ERBB2, 通过连接蛋白PRKN->CYP2D6，或ALB->SLCO1A2，或ALB->SLCO1B3，或ALB->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为CYP2A6, 通过连接蛋白ALB->MTOR，或SLC22A1->SLCO1A2，连接药物Everolimus\n"
+          ],
+          "hop_3": [
+            "LUNG CANCER相关蛋白为ERCC6, 通过连接蛋白UBA52->PHYH->CYP2D6，或MGMT->ABCC3->SLCO1A2，或MGMT->ABCC3->SLCO1B3，或MGMT->ABCC3->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为IRF1, 通过连接蛋白ETV6->PHYH->CYP2D6，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为PPP2R1B, 通过连接蛋白INS->NR1I2->SLCO1A2，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为MAP3K8, 通过连接蛋白TLR4->NR1I2->SLCO1A2，或TLR4->NR1I2->SLCO1B1，连接药物Everolimus\n",
+            "LUNG CANCER相关蛋白为PIK3CA, 通过连接蛋白ABL1->SLC22A1->SLCO1A2，或ABL1->SLC22A1->SLCO1B1，连接药物Everolimus\n"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+    "keyword": "explain_DDA",
+    "example": [
+        {
+            "drug_name": "Everolimus",
+            "disease_name": "LUNG CANCER",
+            "explain_graph": "【总体判断】\nEverolimus用于LUNG CANCER的重定位预测主要由蛋白扰动间接关联网络支持：药物侧靶标蛋白-药物网络权重47.0%，疾病侧疾病-靶标蛋白网络权重48.0%，是两侧最主要证据。drug-protein与disease-protein之间没有共同蛋白，因此该预测不应解释为直接靶点重合，而是依赖一阶PPI形成的间接桥接。直接治疗关联网络在药物侧和疾病侧分别占37.0%和36.0%，提供背景支持但不是核心桥接证据。\n\n【主要证据来源】\n1. 药物侧证据：Everolimus的主要证据来自靶标蛋白-药物网络，权重47.0%，相关蛋白包括MTOR、CYP3A4、CYP2D6、SLCO1B3、SLCO1B1等；药物相似性网络权重16.0%，仅作为辅助信息。\n2. 疾病侧证据：LUNG CANCER的主要证据来自疾病-靶标蛋白网络，权重48.0%，相关蛋白包括EGFR、ERBB2、KRAS、BRAF、PIK3CA、FASLG、CASP8、CYP2A6等；疾病相似性网络权重16.0%，提供辅助背景。\n3. 药物-疾病桥接证据：两侧蛋白无重合，但多条疾病蛋白可经一阶PPI连接至Everolimus相关蛋白，形成间接桥接；药物-疾病治疗直接关联网络权重为Everolimus 37.0%、LUNG CANCER 36.0%，支持总体相关性但不能替代蛋白桥接证据。\n\n【最佳作用路径排序】\n1. LUNG CANCER—KRAS/BRAF/PIK3CA/FASLG/CASP8—MTOR—Everolimus：protein-PPI间接路径；涉及疾病侧蛋白网络48.0%和药物侧蛋白网络47.0%，多个疾病蛋白均连接至MTOR，且MTOR为Everolimus药物侧节点，证据最集中。\n2. LUNG CANCER—EGFR/ERBB2—MTOR或CYP3A4—Everolimus：protein-PPI间接路径；同样连接疾病侧48.0%与药物侧47.0%，但桥接蛋白分布较前一路径更分散，故排第二。\n3. LUNG CANCER—CYP2A6—CYP3A4/CYP2D6/SLCO1B3/SLCO1B1—Everolimus：protein-PPI间接路径；涉及疾病侧48.0%和药物侧47.0%，可达连接较多，但主要由单个疾病蛋白CYP2A6发出，证据集中度较低。\n\n【机制性解释】\n综合网络证据，Everolimus与LUNG CANCER之间的预测关联主要来自两侧高权重蛋白网络之间的一阶PPI桥接，而非共同靶点。疾病侧KRAS、BRAF、PIK3CA、FASLG、CASP8等蛋白可通过MTOR连接至Everolimus，EGFR、ERBB2及CYP2A6也可通过MTOR、CYP3A4、CYP2D6或SLCO转运相关节点形成间接连接。这些路径提示Everolimus可能与LUNG CANCER相关蛋白模块存在网络邻近性；直接治疗关联网络和相似性网络仅提供辅助一致性，不能据此推断已证实疗效。"
+        }
+    ]
+}
