@@ -33,6 +33,19 @@ XMMBNet/
 
 The three datasets are stored under `name_data/drug_data/` and are selected with `--data_name`.
 
+### Data download
+
+The dataset files are hosted on [Hugging Face](https://huggingface.co/datasets/WJing123/XMMBNet_dataset) because of their size. Download the `drug_data` folder from the dataset repository, extract it if it is downloaded as an archive, and place it under `name_data/` as follows:
+
+```text
+name_data/
+└── drug_data/
+    ├── Adataset/
+    ├── Cdataset/
+    └── Gdataset/
+```
+
+
 | Dataset | Drugs | Diseases | Proteins |
 |---|---:|---:|---:|
 | Adataset | 1,220 | 2,480 | 3,710 |
