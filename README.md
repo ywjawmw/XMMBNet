@@ -84,7 +84,7 @@ Run all model commands from the repository root because the data and output path
 
 ## Training
 
-The main training entry point is `drug_train_GCL_enhanced15.py`. It performs 10-fold cross-validation, evaluates AUROC and AUPR, and saves the best checkpoint for every fold.
+The main training entry point is `drug_train_GCL_enhanced15.py`. It performs 10-fold cross-validation, evaluates AUROC and AUPR.
 
 Example for Adataset on GPU 0:
 
