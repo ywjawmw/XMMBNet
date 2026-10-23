@@ -123,11 +123,6 @@ These values are also the current defaults in both the training and graph-inform
 
 Training also supports `--data_name Cdataset` and `--data_name Gdataset` with their corresponding dataset-specific settings. Use `--device -1` for CPU execution.
 
-The main outputs are:
-
-- `weight/<dataset>_0time/*.pkl`: best checkpoint for each fold.
-
-`--ppi_radio` selects a file named `ppi_adj_enhanced-<value>.csv`; only use a threshold for which that file exists in the selected dataset directory.
 
 ## Prediction and explanation workflow
 
