@@ -137,14 +137,14 @@ python drug_test_GCL_enhanced15_graph_info.py \
   --protein_path_top_id 1
 ```
 
-`--graph_info_disease_name` must exactly match a value in `name_data/drug_data/{dataset_name}/disease_name.csv`. It takes precedence over `--graph_info_disease_id`. The script runs all ten checkpoints, ranks candidate drugs across folds, and exports:
+Users can load trained models saved according to their preferred model selection strategies. `--graph_info_disease_name` must exactly match a value in `name_data/drug_data/{dataset_name}/disease_name.csv`. It takes precedence over `--graph_info_disease_id`. The script runs all ten checkpoints, ranks candidate drugs across folds, and exports:
 
 - fold-wise and ensemble candidate rankings;
 - drug-side and disease-side graph summaries;
 - detailed contributing neighbors;
 - direct protein overlap or PPI paths of up to three hops.
 
-The Excel file is written under `case/{dataset_name}/`. Set `OMIM_name` near the bottom of `drug_test_GCL_enhanced15_graph_info.py` to the short label used for the case-study output filename.
+The Excel file is written under `case/{dataset_name}/`. Set `OMIM_name` near the bottom of `drug_test_GCL_enhanced15_graph_info.py` to the short label used for the case-study output filename. 
 
 ### 2. Build JSON evidence for a selected candidate
 
