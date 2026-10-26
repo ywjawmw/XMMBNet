@@ -35,7 +35,7 @@ The three datasets are stored under `name_data/drug_data/` and are selected with
 
 ### Data download
 
-A demo version of the dataset is available on [Hugging Face](https://huggingface.co/datasets/WJing123/XMMBNet_dataset/tree/main) because of their size. Download the `drug_data` folder from the dataset repository, extract it if it is downloaded as an archive, and place it under `name_data/` as follows:
+A demo version of the dataset is available on [Hugging Face](https://huggingface.co/datasets/WJing123/XMMBNet_demo_dataset) because of their size. Download the `drug_data` folder from the dataset repository, extract it if it is downloaded as an archive, and place it under `name_data/` as follows:
 
 ```text
 name_data/
