@@ -115,7 +115,7 @@ The explicit model settings above are the best Adataset hyperparameters reported
 
 These values are also the current defaults in both the training and graph-information test scripts.
 
-Training also supports `--data_name Cdataset/_demo` and `--data_name Gdataset/_demo` with their corresponding dataset-specific settings. Use `--device -1` for CPU execution.
+Training also supports `--data_name Cdataset/_demo` and `--data_name Gdataset/_demo` with their corresponding dataset-specific settings. Use `--device -1` for CPU execution. Users may implement their own model selection strategies for subsequent analyses.
 
 
 ## Prediction and explanation workflow
