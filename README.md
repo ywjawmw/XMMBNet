@@ -26,7 +26,7 @@ XMMBNet/
 │   └── graph_information/                     # JSON evidence and LLM outputs
 ├── case/                                      # Case-study Excel outputs
 ├── result/                                    # Results
-└── weight/                                    # Model checkpoints (created during training)
+└── weight/                                    # Model checkpoints for subsequent analyses
 ```
 
 ## Datasets
