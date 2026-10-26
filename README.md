@@ -15,10 +15,10 @@ XMMBNet/
 ├── GCL_layer.py                               # Graph contrastive-learning layers
 ├── utils*.py                                  # Graph and training utilities
 ├── requirement.txt                            # Python dependencies
-├── name_data/drug_data/
-│   ├── Adataset/
-│   ├── Cdataset/
-│   └── Gdataset/
+├── name_data/drug_data/                       # dataset
+│   ├── Adataset_demo/
+│   ├── Cdataset_demo/
+│   └── Gdataset_demo/
 ├── explain/
 │   ├── get_graph_info_ppi_path.py             # Build candidate-specific graph and PPI evidence JSON
 │   ├── get_LLM_response.py                    # Generate the final LLM explanation
@@ -35,22 +35,17 @@ The three datasets are stored under `name_data/drug_data/` and are selected with
 
 ### Data download
 
-The dataset files are hosted on [Hugging Face](https://huggingface.co/datasets/WJing123/XMMBNet_dataset/tree/main) because of their size. Download the `drug_data` folder from the dataset repository, extract it if it is downloaded as an archive, and place it under `name_data/` as follows:
+A demo version of the dataset is available on [Hugging Face](https://huggingface.co/datasets/WJing123/XMMBNet_dataset/tree/main) because of their size. Download the `drug_data` folder from the dataset repository, extract it if it is downloaded as an archive, and place it under `name_data/` as follows:
 
 ```text
 name_data/
 └── drug_data/
-    ├── Adataset/
-    ├── Cdataset/
-    └── Gdataset/
+    ├── Adataset_demo/
+    ├── Cdataset_demo/
+    └── Gdataset_demo/
 ```
 
-
-| Dataset | Drugs | Diseases | Proteins |
-|---|---:|---:|---:|
-| Adataset | 1,220 | 2,480 | 3,710 |
-| Cdataset | 663 | 409 | 927 |
-| Gdataset | 593 | 313 | 2,670 |
+The complete datasets will be released in the future.
 
 The loader uses the following core files in each dataset directory:
 
@@ -90,7 +85,7 @@ Example for Adataset on GPU 0:
 
 ```bash
 python drug_train_GCL_enhanced15.py \
-  --data_name Adataset \
+  --data_name Adataset_demo \
   --device 0 \
   --train_lr 0.03 \
   --layers 1 \
@@ -121,7 +116,7 @@ The explicit model settings above are the best Adataset hyperparameters reported
 
 These values are also the current defaults in both the training and graph-information test scripts.
 
-Training also supports `--data_name Cdataset` and `--data_name Gdataset` with their corresponding dataset-specific settings. Use `--device -1` for CPU execution.
+Training also supports `--data_name Cdataset/_demo` and `--data_name Gdataset/_demo` with their corresponding dataset-specific settings. Use `--device -1` for CPU execution.
 
 
 ## Prediction and explanation workflow
@@ -134,9 +129,9 @@ After training, run the graph-information test script:
 
 ```bash
 python drug_test_GCL_enhanced15_graph_info.py \
-  --data_name Adataset \
+  --data_name Adataset/_demo \
   --device 0 \
-  --graph_info_disease_name MIM145500 \
+  --graph_info_disease_name MIMXXXXX \
   --graph_info_topn 10 \
   --graph_info_fold 2 \
   --protein_path_top_id 1
@@ -149,7 +144,7 @@ python drug_test_GCL_enhanced15_graph_info.py \
 - detailed contributing neighbors;
 - direct protein overlap or PPI paths of up to three hops.
 
-The Excel file is written under `case/Adataset/`. Set `OMIM_name` near the bottom of `drug_test_GCL_enhanced15_graph_info.py` to the short label used for the case-study output filename.
+The Excel file is written under `case/{dataset_name}/`. Set `OMIM_name` near the bottom of `drug_test_GCL_enhanced15_graph_info.py` to the short label used for the case-study output filename.
 
 ### 2. Build JSON evidence for a selected candidate
 
@@ -158,7 +153,7 @@ Set the case label, candidate rank, fold, and disease ID in `explain/get_graph_i
 ```python
 FOLD_ID = 2
 summary_rank_id = 1
-Disease_NMAE = "FA"
+Disease_NMAE = "XXX"
 # ...
 disease_id = 439
 ```
