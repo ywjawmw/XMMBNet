@@ -9,7 +9,6 @@ XMMBNet/
 ├── drug_test_GCL_enhanced15_graph_info.py    # Prediction, subgraph and PPI-path export
 ├── dataset_loader_enhanced15.py               # Dataset loading and graph construction
 ├── model_proj_enhanced15.py                   # XMMBNet model
-├── model_proj_enhanced15_test.py              # Test-time model components
 ├── evaluate15.py                              # Training evaluation
 ├── evaluate15_test.py                         # Test-time evaluation and explanations
 ├── GCL_layer.py                               # Graph contrastive-learning layers
