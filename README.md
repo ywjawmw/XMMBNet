@@ -1,6 +1,7 @@
 # XMMBNet: Explainable Multi-view Enhanced Multi-scale Biological Network Fusion Model for Drug Repurposing.
 
 XMMBNet constructs drug and disease similarity networks from 12 types of information spanning molecular, functional, and pathway levels and integrates six biological networks. It organizes these networks into direct therapeutic and indirect biological views, and uses network-specific graph encoders, dynamic entity aggregation, and multi-view contrastive learning to coordinate complementary evidence while preserving their distinct biological roles. XMMBNet further combines learned evidence weights with biological network subgraphs and protein-guided paths to generate traceable mechanistic hypotheses through constrained language generation and quality control.
+
 ## Repository structure
 
 ```text
