@@ -57,7 +57,7 @@ The loader uses the following core files in each dataset directory:
 - `gene_emb.pt`: pretrained protein embeddings;
 - `drug_name.csv`, `disease_name.csv`, and protein-name mapping files: entity identifiers and names.
 
-The explanation scripts additionally use `drugbank_drugs.csv`, `omim_diseases.csv`, and `protein_name_enhanced.csv`. These files and the current case-study workflow are prepared for **Adataset**. Training supports all three datasets.
+Training supports all three datasets.
 
 ## Environment
 
@@ -137,7 +137,7 @@ python drug_test_GCL_enhanced15_graph_info.py \
   --protein_path_top_id 1
 ```
 
-`--graph_info_disease_name` must exactly match a value in `name_data/drug_data/Adataset/disease_name.csv`. It takes precedence over `--graph_info_disease_id`. The script runs all ten checkpoints, ranks candidate drugs across folds, and exports:
+`--graph_info_disease_name` must exactly match a value in `name_data/drug_data/{dataset_name}/disease_name.csv`. It takes precedence over `--graph_info_disease_id`. The script runs all ten checkpoints, ranks candidate drugs across folds, and exports:
 
 - fold-wise and ensemble candidate rankings;
 - drug-side and disease-side graph summaries;
